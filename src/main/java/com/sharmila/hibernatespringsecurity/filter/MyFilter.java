@@ -24,7 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author sharmila
  */
-@WebFilter(filterName = "myFilter",urlPatterns = "/**")
+//@WebFilter(filterName = "myFilter",urlPatterns = "/**")
 public class MyFilter  implements Filter{
 
     @Override

@@ -37,15 +37,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-<!--    <filter>
-        <filter-name>MyFilter</filter-name>
-        <filter-class>com.sharmila.hibernatespringsecurity.filter.MyFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>MyFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>-->
     <session-config>
         <session-timeout>
             30
