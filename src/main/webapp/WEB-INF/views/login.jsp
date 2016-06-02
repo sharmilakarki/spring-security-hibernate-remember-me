@@ -26,7 +26,7 @@
            
             
        
-            <form   action="${URL}/login " class="mdl-layout" modelAttribute="user" method="POST">
+            <form   action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" class="mdl-layout" modelAttribute="user" method="POST">
                 <h3>Login Form</h3>
                 <input type="hidden" name="id"/>
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >

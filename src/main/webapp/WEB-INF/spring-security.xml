@@ -8,51 +8,53 @@
 
     <!-- enable use-expressions -->
     
-   <http auto-config="true" use-expressions="true">
+    <http auto-config="true" use-expressions="true">
 		
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		
-        <!-- access denied page -->
-        <access-denied-handler error-page="/403" />
+<!--         access denied page -->
+
+        
 		
-      <form-login login-page="/login" 
-                        default-target-url="/admin/**"
-			authentication-failure-url="/login?error" 
-			username-parameter="username"
-			password-parameter="password" 
-                        login-processing-url="/login"
-                        authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler"
-                        />
+        <form-login login-page="/login" 
+                  default-target-url="/userprofile/**"
+                  authentication-failure-url="/login?error" 
+                  username-parameter="username"
+                  password-parameter="password" 
+                  login-processing-url="/auth/login_check"
+                  authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler"
+        />
 
 		
        
-    <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
-    <csrf />
+        <logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
+        <csrf />
 
-    <!-- enable remember me -->
-    <remember-me 
-        token-validity-seconds="1209600"
-	remember-me-parameter="remember-me" 
-	data-source-ref="dataSource" />
+        <!-- enable remember me -->
+        <remember-me 
+            token-validity-seconds="1209600"
+            remember-me-parameter="remember-me" 
+            data-source-ref="dataSource" />
 
-  </http>
+    </http>
        
-<!--       remember me parameter is name of the checkbox ,if dataSource is defined then persistentTokenBasedApproach is used which default to simple hash-based token approach-->
+    <!--       remember me parameter is name of the checkbox ,if dataSource is defined then persistentTokenBasedApproach is used which default to simple hash-based token approach-->
       
 	
     <!-- Select users and user_roles from database -->
     <authentication-manager>
-	  <authentication-provider >
-              <jdbc-user-service data-source-ref="dataSource"
-                                   users-by-username-query=
-		    "select username,password, enabled from user where username=?"
-                                   authorities-by-username-query=
+        <authentication-provider user-service-ref="userService"/>
+<!--            <jdbc-user-service data-source-ref="dataSource"
+                                 users-by-username-query=
+		    "select u.username ,u.password,u.enabled ,r.role from user u,tbl_role r,role_user ru where u.user_id=ru.user_id and r.id=ru.role_id and u.username=?" 
+            
+                                 authorities-by-username-query=
 
 
   "select u.username ,u.password ,r.role from user u,tbl_role r,role_user ru where u.user_id=ru.user_id and r.id=ru.role_id and u.username=?" />
             
          
-          </authentication-provider>
+        </authentication-provider>-->
     </authentication-manager>
 
 

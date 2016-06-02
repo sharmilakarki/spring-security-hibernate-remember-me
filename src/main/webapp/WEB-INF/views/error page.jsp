@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Bad login credentials</h1>
-        <a href="/">Back</a>
+        <button class="mdl-button mdl-button--colored" id="backBtn">Back</button>
         <c:choose>
 		<c:when test="${empty username}">
 		  <h2>You do not have permission to access this page!</h2>
@@ -24,5 +24,12 @@
                     You do not have permission to access this page!</h2>
 		</c:otherwise>
 	</c:choose>
+                  <script>
+                      $(document).on("ready",function(){
+                          $("#backBtn").on("click",function (){
+                              window.history.go(-1);
+                          })
+                      })
+                  </script>
     </body>
 </html>

@@ -34,7 +34,10 @@
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <input class="mdl-textfield__input" type="text" id="address" name="address" value="${user.address}"/>
 
-                </div>
+              
+                    <input class="mdl-textfield__input" type="hidden" id="password" name="password" value="${user.password}"/>
+
+               
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <input class="mdl-textfield__input" type="text" id="status"  name="status" value="${user.status}"/>
                 </div>
@@ -43,7 +46,8 @@
                         Edit
                     </button>
                 </div>
-
+                 <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}" />
             </form>
         </div>
     </body>

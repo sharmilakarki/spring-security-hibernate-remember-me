@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author sharmila
  */
-@Repository("userDao")
+//@Repository("userDao")
 @org.springframework.transaction.annotation.Transactional
 public class UserDaoImpl implements UserDao {
 
@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao {
     public void update(User user) {
        session = sessionFactory.openSession();
         transaction = session.beginTransaction();
-        session.update(user);
+        session.saveOrUpdate(user);
         transaction.commit();
         session.close();
         

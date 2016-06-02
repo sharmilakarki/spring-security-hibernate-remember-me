@@ -151,6 +151,7 @@ public class DefaultController {
     
     @RequestMapping(value = "/admin/user/add", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("userAdd") User user, @RequestParam("id") int id) {
+        String view="";
         User u = userService.getById(id);
         if (u.getId() == 0) {
             Role role = roleDao.getById(2);
@@ -158,13 +159,15 @@ public class DefaultController {
             roles.add(role);
             user.setRole(roles);
             userService.insert(user);
-
+            view="redirect:/login";
         } else {
+            
             System.out.println(user.toString());
             userService.update(user);
+            view="redirect:/adminDashboard";
         }
 
-        return "redirect:/login";
+        return view;
     }
 
    
