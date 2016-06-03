@@ -64,6 +64,7 @@ public class UserService implements UserDetailsService{
 
     //converting com.....User to org.springframework.security.core.userdetails.User
     private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+        // boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked for true
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), user.isStatus(), true, true, true, authorities);
 
     }

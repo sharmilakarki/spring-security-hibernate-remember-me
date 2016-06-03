@@ -99,7 +99,7 @@ public class UserDaoImpl implements UserDao {
     public User getByUserName(String username) {
         session=sessionFactory.openSession();
         List<User> userList=new ArrayList<User>();
-        userList=session.createQuery("select u from User u where username=?").setParameter(0, username).list();
+        userList=session.createQuery("select u from User u where username=:username").setString("username", username).list();
         if(userList.size()>0){
             return userList.get(0);
         }
