@@ -27,7 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author sharmila
  */
-@WebFilter(filterName = "myFilter", urlPatterns = "/login")
+//@WebFilter(filterName = "myFilter", urlPatterns = "/login")
 public class MyFilter implements Filter {
 
     @Override
@@ -44,15 +44,15 @@ public class MyFilter implements Filter {
         String username = req.getParameter("username");
         UserService userService = new UserService();
 
-        User user = userService.login(username);
-        Set<Role> roles = user.getRole();
-        for (Role r : roles) {
-            if (roles.contains("ROLE_USER")) {
-                res.sendRedirect("/userprofile");
-            } else if (roles.contains("ROLE_ADMIN")) {
-                res.sendRedirect("/adminDashboard");
-            }
-        }
+//        User user = userService.login(username);
+//        Set<Role> roles = user.getRole();
+//        for (Role r : roles) {
+//            if (roles.contains("ROLE_USER")) {
+//                res.sendRedirect("/userprofile");
+//            } else if (roles.contains("ROLE_ADMIN")) {
+//                res.sendRedirect("/adminDashboard");
+//            }
+//        }
 
         chain.doFilter(req, res);
     }

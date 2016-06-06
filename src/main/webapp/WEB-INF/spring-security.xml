@@ -17,7 +17,7 @@
         
 		
         <form-login login-page="/login" 
-                    default-target-url="/admin"
+                  default-target-url="/admin/**"
                   authentication-failure-url="/login?error" 
                   username-parameter="username"
                   password-parameter="password" 

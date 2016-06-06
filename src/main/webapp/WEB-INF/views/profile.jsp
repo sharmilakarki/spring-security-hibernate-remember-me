@@ -14,7 +14,7 @@
         <title>User Page</title>
     </head>
     <body>
-        <h1>Hello</h1>
+       
         <sec:authorize access="hasRole('ROLE_USER')">
             <h1>User profile</h1>
             <c:url value="/login?logout" var="logout"/>

@@ -24,23 +24,29 @@
             var p = document.getElementById("para");
 
             function checkVal(form) {
+                var un = document.getElementById("username");
+                var pa = document.getElementById("password");
+                var pa2 = document.getElementById("password2");
+                var em = document.getElementById("email");
+                var add = document.getElementById("address");
+                var p = document.getElementById("para");
                 re = /^\w+$/;
                 if (!re.test(form.username.value)) {
                     alert("Error: Username must contain only letters, numbers and underscores!");
                     form.username.focus();
                     return false;
                 }
-                if((form.password.value!=form.password2.value)){
-                    alert("Error: The password should be matching ");
-                    form.password.focus();
-                    return false;
-                }
+//                if (pa=pa2) {
+//                    alert("Error: The password should be matching ");
+//                    form.password.focus();
+//                    return false;
+//                }
             }
         </script>
-        <div class="addUserForm">
+        <div class="add">
             <p id="para"></p>
-            <c:url var="add" value="/admin/user/add"/>
-            <form action="${add}"  name="signupForm" class="mdl-layout" modelAttribute="userAdd" method="POST" onsubmit="return checkVal(this);">
+            <c:url var="add" value="add"/>
+            <form action="${URL}/user/add"  name="signupForm" class="mdl-layout" modelAttribute="user" method="POST" >
                 <h6>Register User</h6>
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="userName">Username</label>
@@ -51,10 +57,10 @@
                     <label class="mdl-textfield__label" for="password">password</label>
                     <input class="mdl-textfield__input" type="password" id="password" name="password" required="true"/>
                 </div>
-                <div class="mdl-layout mdl-textfield mdl-js-textfield" >
+<!--                <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="password2">password</label>
-                    <input class="mdl-textfield__input" type="password" id="password2" required="true"/>
-                </div>
+                    <input class="mdl-textfield__input" type="password" name="password" id="password2" required="true"/>
+                </div>-->
 
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="email">email</label>
@@ -66,7 +72,7 @@
                     <input class="mdl-textfield__input" type="text" id="address" name="address" required="true"/>
                 </div>
 
-
+                
 
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="status">status</label>
@@ -77,7 +83,7 @@
                        value="${_csrf.token}"/>
 
                 <div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" >
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="return checkVal(this);" >
                         Add
                     </button>
                 </div>

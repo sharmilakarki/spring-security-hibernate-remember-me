@@ -26,9 +26,9 @@
            
             
        
-            <form   action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" class="mdl-layout" modelAttribute="user" method="POST">
+            <form  name="loginForm" action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" class="mdl-layout" modelAttribute="user" method="POST">
                 <h3>Login Form</h3>
-                <input type="hidden" name="id"/>
+               
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="username">Username</label>
                     <input class="mdl-textfield__input" type="text" id="username" name="username"/>
@@ -63,7 +63,7 @@
                 </div>
                 <div>
                     <a href="${URL}/user/SignupPage" class="mdl-button mdl-js-button mdl-button--raised  mdl-button--accent">Signup</a>
-                    <div>
+                
                     </div>
 
                     <script type="text/javascript">

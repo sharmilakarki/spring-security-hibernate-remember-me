@@ -13,6 +13,8 @@ import com.sharmila.hibernatespringsecurity.entity.User;
 import com.sharmila.hibernatespringsecurity.entity.UserRoles;
 import com.sharmila.hibernatespringsecurity.service.UserRoleService;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +62,6 @@ public class DefaultController {
         return "index";
     }
 
-   
     @RequestMapping(value = "/login")
     public ModelAndView defaultPage(@RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
@@ -70,12 +71,12 @@ public class DefaultController {
             //login from noRemebermePage
             //if error get targetUrl from session again
             String targetUrl = getRememberMeTargetUrlFromSession(request);
-			System.out.println(targetUrl);
-			if(StringUtils.hasText(targetUrl)){
-				model.addObject("targetUrl", targetUrl);
-				model.addObject("loginUpdate", true);
-			}
-			
+            System.out.println(targetUrl);
+            if (StringUtils.hasText(targetUrl)) {
+                model.addObject("targetUrl", targetUrl);
+                model.addObject("loginUpdate", true);
+            }
+
         }
         if (logout != null) {
             model.addObject("message", "Logged out successfully");
@@ -86,12 +87,6 @@ public class DefaultController {
         return model;
     }
 
-   
-    
-    
-    
-    
-    
     @RequestMapping(value = "/user/SignupPage")
     public ModelAndView signup() {
         ModelAndView mv = new ModelAndView();
@@ -112,16 +107,12 @@ public class DefaultController {
         return mv;
     }
 
-  
-    
     @RequestMapping(value = {"/userprofile"})
     public ModelAndView userProfile() {
 
         return new ModelAndView("profile");
     }
 
-  
-    
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView errorPage() {
 
@@ -138,76 +129,73 @@ public class DefaultController {
         return model;
     }
 
-  
-    
-    
     @RequestMapping(value = "/admin/AllUsers")
     public ModelAndView getUsers() {
 
         return new ModelAndView("AllUsers", "user", userService.getAll());
     }
 
-  
-    
-    @RequestMapping(value = "/admin/user/add", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("userAdd") User user, @RequestParam("id") int id) {
-        String view="";
-        User u = userService.getById(id);
-        if (u.getId() == 0) {
+    @RequestMapping(value = "user/add", method = RequestMethod.POST)
+    public ModelAndView addUser(@ModelAttribute("user") User user, BindingResult result) {
+        System.out.println("inside insert");
+        
             Role role = roleDao.getById(2);
             Set<Role> roles = new HashSet<Role>();
             roles.add(role);
             user.setRole(roles);
             userService.insert(user);
-            view="redirect:/login";
-        } else {
-            
-            System.out.println(user.toString());
-            userService.update(user);
-            view="redirect:/adminDashboard";
-        }
-
-        return view;
+//            System.out.println("Users "+user.toString());
+       
+        return new ModelAndView ("redirect:/admin/AllUsers");
     }
 
-   
-    
+    @RequestMapping(value = "editUser", method = RequestMethod.POST)
+    public String editUser(@ModelAttribute("userAdd") User user, BindingResult result, @RequestParam("id") int id) {
+        String view = "";
+        User u = userService.getById(id);
+        if (u.getId() != 0) {
+
+            Date date = new Date();
+            Timestamp t = new Timestamp(date.getTime());
+            user.setModifiedDate(t);
+            userService.update(user);
+//            view="redirect:/adminDashboard";
+        }
+        System.out.println(user.toString());
+
+        return "redirect:/admin/AllUsers";
+    }
+
     @RequestMapping(value = "delete")
     public ModelAndView deleteUser(@RequestParam int id) {
         userService.delete(id);
         return new ModelAndView("redirect:/admin/AllUsers");
     }
 
-   
-    
     @RequestMapping(value = "edit")
     public ModelAndView editUser(@RequestParam int id, @ModelAttribute("userEdit") User user) {
         user = userService.getById(id);
         return new ModelAndView("editUser", "user", user);
     }
 
-   
-    
     @RequestMapping("/info")
     public String info() {
         return "InformationPage";
     }
     //checks if the user is logged in by remember-me cookie, it refers to org.springframework.security.authentication.AuthenticationTrustResolverImpl
 
-  private boolean isRememberMeAuthenticated() {
+    private boolean isRememberMeAuthenticated() {
 
-		Authentication authentication = 
-                    SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null) {
-			return false;
-		}
+        Authentication authentication
+                = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
 
-		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-	}
+        return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
+    }
 //    With 'true' it creates a session if it does not exist, with 'false' it returns active session if exists otherwise null. It would be more efficient to use 'false', so you don't unnecessarily create sessions, and create sessions only when needed.
 
-   
-    
     private void setRememberMeTargetUrlToSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -215,9 +203,6 @@ public class DefaultController {
         }
     }
 
-    
-    
-    
     private String getRememberMeTargetUrlFromSession(HttpServletRequest request) {
         String targetUrl = "";
         HttpSession session = request.getSession(false);
@@ -228,30 +213,28 @@ public class DefaultController {
 
     }
 
-   
-    
-   /**
-	 * This update page is for user login with password only.
-	 * If user is login via remember me cookie, send login to ask for password again.
-	 * To avoid stolen remember me cookie to update info
-	 */
-	@RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
-	public ModelAndView updatePage(HttpServletRequest request) {
+    /**
+     * This update page is for user login with password only. If user is login
+     * via remember me cookie, send login to ask for password again. To avoid
+     * stolen remember me cookie to update info
+     */
+    @RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
+    public ModelAndView updatePage(HttpServletRequest request) {
 
-		ModelAndView model = new ModelAndView();
+        ModelAndView model = new ModelAndView();
 
-		if (isRememberMeAuthenticated()) {
-			//send login for update
-			setRememberMeTargetUrlToSession(request);
-			model.addObject("loginUpdate", true);
-			model.setViewName("/login");
-			
-		} else {
-			model.setViewName("viewForUpdateUsername");
-		}
+        if (isRememberMeAuthenticated()) {
+            //send login for update
+            setRememberMeTargetUrlToSession(request);
+            model.addObject("loginUpdate", true);
+            model.setViewName("/login");
 
-		return model;
+        } else {
+            model.setViewName("viewForUpdateUsername");
+        }
 
-	}
+        return model;
+
+    }
 
 }
