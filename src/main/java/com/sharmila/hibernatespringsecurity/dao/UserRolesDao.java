@@ -18,5 +18,5 @@ public interface UserRolesDao {
     void update(UserRoles userRoles);
     List<UserRoles> getAll();
     UserRoles getById(int id);
-    UserRoles getByName(String username);
+    UserRoles getByuserId(int userId);
 }

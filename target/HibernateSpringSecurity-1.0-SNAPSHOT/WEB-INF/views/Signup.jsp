@@ -45,9 +45,9 @@
         </script>
         <div class="add">
             <p id="para"></p>
-            <c:url var="add" value="add"/>
+            <c:url var="add" value="user/add"/>
             <form action="${URL}/user/add"  name="signupForm" class="mdl-layout" modelAttribute="user" method="POST" >
-                <h6>Register User</h6>
+                <h6>Join the community</h6>
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="userName">Username</label>
                     <input class="mdl-textfield__input" type="text" id="username" name="userName" required="true"/>
@@ -57,10 +57,10 @@
                     <label class="mdl-textfield__label" for="password">password</label>
                     <input class="mdl-textfield__input" type="password" id="password" name="password" required="true"/>
                 </div>
-<!--                <div class="mdl-layout mdl-textfield mdl-js-textfield" >
-                    <label class="mdl-textfield__label" for="password2">password</label>
-                    <input class="mdl-textfield__input" type="password" name="password" id="password2" required="true"/>
-                </div>-->
+                <!--                <div class="mdl-layout mdl-textfield mdl-js-textfield" >
+                                    <label class="mdl-textfield__label" for="password2">password</label>
+                                    <input class="mdl-textfield__input" type="password" name="password" id="password2" required="true"/>
+                                </div>-->
 
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
                     <label class="mdl-textfield__label" for="email">email</label>
@@ -72,11 +72,12 @@
                     <input class="mdl-textfield__input" type="text" id="address" name="address" required="true"/>
                 </div>
 
-                
+
 
                 <div class="mdl-layout mdl-textfield mdl-js-textfield" >
-                    <label class="mdl-textfield__label" for="status">status</label>
-                    <input class="mdl-textfield__input" type="checkbox" id="status" value="1" name="status" required="true"/>
+
+                    <input class="mdl-textfield__input" type="checkbox" id="status"  required="true"/> 
+                    <br/><center>Terms and Conditions</center>
                 </div>
                 <input type="hidden"
                        name="${_csrf.parameterName}"
@@ -84,11 +85,16 @@
 
                 <div>
                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="return checkVal(this);" >
-                        Add
+                        Sign up
                     </button>
                 </div>
 
             </form>
+                       <br/>
+            <center>        <a href="${URL}/login" class=" mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect " >
+                    Already a member? login
+                </a>
+            </center>
         </div>
 
     </body>

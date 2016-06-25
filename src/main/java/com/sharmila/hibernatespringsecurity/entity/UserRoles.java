@@ -6,6 +6,7 @@
 package com.sharmila.hibernatespringsecurity.entity;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,33 +24,38 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user_role")
 public class UserRoles {
-    
+
     @Id
     @GeneratedValue
-    @Column(name="role_id")
+    @Column(name = "id")
     private int id;
-    
-    @Column(name="user_id")
-    private int userId;
-    @Column(name="role")
-    private String role;
-    @Column(name="username")
-    private String username;
-//    
-//    @JoinColumns({
-//        @JoinColumn(name = "username", referencedColumnName = "userName", nullable = false,insertable = false,updatable = false),
-//        @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false,insertable = false,updatable = false)})
-//    @ManyToOne(optional = false)
-//    private User user;
 
+    @Column(name = "user_id")
+   
+    private int userId;
+    
+    
+    @Column(name = "role_id")
+    
+    private int roleId;
+    
+    
     public UserRoles() {
     }
 
-    public UserRoles(int id, String role, String username, User user) {
+    public UserRoles(int id, int userId, int roleId) {
         this.id = id;
-        this.role = role;
-        this.username = username;
-//        this.user = user;
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -59,41 +66,22 @@ public class UserRoles {
         this.userId = userId;
     }
 
-   
-
-    public int getId() {
-        return id;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
    
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
 
   
- 
+
+   
+
+   
+
+   
+
 }

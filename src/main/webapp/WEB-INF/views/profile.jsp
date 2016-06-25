@@ -12,25 +12,46 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Page</title>
+        <script src="http://maps.googleapis.com/maps/api/js"></script>
+        <script>
+        function getMap(){
+            var mapProp={center:new google.maps.LatLng(51.508742,-0.120850),
+                zoom:5,
+                mapTypeId:google.maps.MapTypeId.ROADMAP};
+            var map=new google.maps.Map(document.getElementById("mapDiv"),mapProp);
+        }
+        google.maps.event.addDomListener(window, 'load', getMap);
+            </script>
     </head>
     <body>
-       
+        
         <sec:authorize access="hasRole('ROLE_USER')">
             <h1>User profile</h1>
-            <c:url value="/login?logout" var="logout"/>
-                <form action="${logout}" method="POST" id="logoutForm">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                </form>
-                <script>
-                    function formSubmit(){
-                        $(document).getElementById("#logoutForm").submit();
-                    }
+            <h3>   <a href="${URL}/logout">Logout</a></h3>
+            <div id="mapDiv" style="width:500px;height:380px;"></div>
+<!--           <c:url value="/logout" var="logoutUrl" />
+
+	 csrt for log out
+	<form action="${logoutUrl}" method="POST" id="logoutForm">
+	  <input type="hidden" 
+		name="${_csrf.parameterName}"
+		value="${_csrf.token}" />
+	</form>
+	
+	<script>
+		function formSubmit() {
+			document.getElementById("logoutForm").submit();
+		}
+	</script>
+
+	<c:if test="${pageContext.request.userPrincipal.name != null}">
+		<h2>
+			Welcome : ${pageContext.request.userPrincipal.name} | <a
+				href="javascript:formSubmit()"> Logout</a>
+		</h2>
+	</c:if>
+        -->
                     
-                </script>
-                <c:if test="${pageContext.request.userPrincipal.name!=null} ">
-                    Hello! ${pageContext.request.userPrincipal.name},
-                    <a href="javascript:formSubmit()" class="btn btn-info">Logout</a>
-                </c:if>
         </sec:authorize>
     </body>
 </html>

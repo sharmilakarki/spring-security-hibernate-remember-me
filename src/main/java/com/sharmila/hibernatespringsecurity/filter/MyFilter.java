@@ -17,8 +17,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author sharmila
  */
-//@WebFilter(filterName = "myFilter", urlPatterns = "/login")
+//@WebFilter(filterName = "myFilter", urlPatterns = "/login?logout")
 public class MyFilter implements Filter {
 
     @Override
@@ -39,21 +41,21 @@ public class MyFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-//        Set<String> roles=AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        String username = req.getParameter("username");
-        UserService userService = new UserService();
+        HttpSession session = req.getSession(false);
 
-//        User user = userService.login(username);
-//        Set<Role> roles = user.getRole();
-//        for (Role r : roles) {
-//            if (roles.contains("ROLE_USER")) {
-//                res.sendRedirect("/userprofile");
-//            } else if (roles.contains("ROLE_ADMIN")) {
-//                res.sendRedirect("/adminDashboard");
-//            }
-//        }
+        if (session != null && session.getAttribute("JSESSIONID") != null) {
+            session.invalidate();
+            Cookie[] cookies = req.getCookies();
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                cookie.setMaxAge(0);
+                cookie.setValue(null);
+                cookie.setPath("/");
+                res.addCookie(cookie);
+            }
+            res.sendRedirect("/login");
 
+        }
         chain.doFilter(req, res);
     }
 

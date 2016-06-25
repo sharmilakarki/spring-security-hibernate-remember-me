@@ -7,6 +7,7 @@ package com.sharmila.hibernatespringsecurity.dao.impl;
 
 import com.sharmila.hibernatespringsecurity.dao.RoleDao;
 import com.sharmila.hibernatespringsecurity.entity.Role;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Repository;
 public class RoleDaoImpl implements RoleDao {
 
     @Autowired
-    private SessionFactory SessionFactory;
+    private SessionFactory sessionFactory;
     private Session session;
     private Transaction transaction;
 
@@ -33,7 +34,14 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public void delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session=sessionFactory.openSession();
+        transaction=session.beginTransaction();
+         Role role = (Role) session.get(Role.class, new Integer(id));
+         if(role!=null){
+             session.delete(role);
+         }
+         transaction.commit();
+         session.close();
     }
 
     @Override
@@ -43,12 +51,17 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Role> roleList = new ArrayList<>();
+        session = sessionFactory.openSession();
+        roleList = session.createQuery("select r from Role  r").list();
+       
+        session.close();
+        return roleList;
     }
 
     @Override
     public Role getById(int id) {
-        session = SessionFactory.openSession();
+        session = sessionFactory.openSession();
         Role role = (Role) session.get(Role.class, new Integer(id));
         session.close();
         return role;
@@ -56,7 +69,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role getByName(String rolename) {
-        session = SessionFactory.openSession();
+        session = sessionFactory.openSession();
         Role role = (Role) session.get(Role.class, new String(rolename));
         session.close();
         return role;

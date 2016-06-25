@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="../views/header.jsp" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page session="true"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,120 +41,143 @@
         <title>Admin Page</title>
     <body onload="disableback();">
         <!-- The drawer is always open in large screens. The header is always shown,
-          even in small screens. -->
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header class="mdl-layout__header">
-                <div class="mdl-layout__header-row">
-                    <span class="mdl-layout__title">DashBoard</span>
-                    <div class="mdl-layout-spacer"></div>
+          even in small screens. -->          
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <header class="mdl-layout__header">
+                    <div class="mdl-layout__header-row">
+                        <span class="mdl-layout__title">DashBoard</span>
+                        <div class="mdl-layout-spacer"></div>
+                        <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                            <a class="mdl-navigation__link" href="#">Option 1</a>
+                            <a class="mdl-navigation__link" href="#">Option 2</a>
+                            <!--                            <a class="mdl-navigation__link" href="javascript:formSubmit()">Test logout</a>-->
+                            <a class="mdl-navigation__link" href="${URL}/logout"> logout</a>
+                            
+                        </nav>
+                    </div>
+                </header>
+
+
+                <c:url value="/logout" var="logoutUrl" />
+
+<!--                                 //csrf for log out
+                <form action="${logoutUrl}" method="POST" id="logoutForm">
+                    <input type="hidden" 
+                           name="${_csrf.parameterName}"
+                           value="${_csrf.token}" />
+                </form>
+
+                <script>
+                    function formSubmit() {
+                        document.getElementById("logoutForm").submit();
+                    }
+                </script>-->
+
+
+                <div class="mdl-layout__drawer">
+                    <span class="mdl-layout__title">${username}</span>
                     <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                        <a class="mdl-navigation__link" href="#">Option 1</a>
-                        <a class="mdl-navigation__link" href="#">Option 2</a>
-                        <a class="mdl-navigation__link" href="#">About</a>
-                        <a class="mdl-navigation__link" href="${URL}/login/?logout">logout</a>
+                        <a class="mdl-navigation__link"  id="usersLink" <a class="mdl-navigation__link" href="${URL}/admin/AllUsers"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Users</a>
+                            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+                            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
+                            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
                     </nav>
                 </div>
-            </header>
-            <div class="mdl-layout__drawer">
-                <span class="mdl-layout__title">${username}</span>
-                <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                    <a class="mdl-navigation__link"  id="usersLink" <a class="mdl-navigation__link" href="${URL}/admin/AllUsers"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Users</a>
-                        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-                        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
-                        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
-                </nav>
-            </div>
-            <main class="mdl-layout__content">
-                <sec:authorize access="isRememberMe()">
-                    <h2># This user is login by "Remember Me Cookies".</h2>
-                </sec:authorize>
+                <main class="mdl-layout__content">
+                    <div id="contentDiv" class="mdl-layout">
+                        <sec:authorize access="isRememberMe()">
+                            <h2># This user is login by "Remember Me Cookies".</h2>
+                        </sec:authorize>
 
-                <sec:authorize access="isFullyAuthenticated()">
-                    <h2># This user is login by username / password.</h2>
-                </sec:authorize>
-                <div class="mdl-grid demo-content">
-                    <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-                        <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-                        <use xlink:href="#piechart" mask="url(#piemask)" />
-                        <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan font-size="0.2" dy="-0.07">%</tspan></text>
-                        </svg>
-                        <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-                        <use xlink:href="#piechart" mask="url(#piemask)" />
-                        <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-                        </svg>
-                        <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-                        <use xlink:href="#piechart" mask="url(#piemask)" />
-                        <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-                        </svg>
-                        <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-                        <use xlink:href="#piechart" mask="url(#piemask)" />
-                        <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-                        </svg>
+                        <sec:authorize access="isFullyAuthenticated()">
+                            <h2># This user is login by username / password.</h2>
+                        </sec:authorize>
+
                     </div>
-                    <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-                        <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
-                        <use xlink:href="#chart" />
-                        </svg>
-                        <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
-                        <use xlink:href="#chart" />
-                        </svg>
-                    </div>
-                    <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
-                        <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-                            <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                                <h2 class="mdl-card__title-text">Updates</h2>
+                    <div class="mdl-grid demo-content">
+                        <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+                            <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
+                            <use xlink:href="#piechart" mask="url(#piemask)" />
+                            <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan font-size="0.2" dy="-0.07">%</tspan></text>
+                            </svg>
+                            <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
+                            <use xlink:href="#piechart" mask="url(#piemask)" />
+                            <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
+                            </svg>
+                            <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
+                            <use xlink:href="#piechart" mask="url(#piemask)" />
+                            <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
+                            </svg>
+                            <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
+                            <use xlink:href="#piechart" mask="url(#piemask)" />
+                            <text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
+                            </svg>
+                        </div>
+                        <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
+                            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
+                            <use xlink:href="#chart" />
+                            </svg>
+                            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
+                            <use xlink:href="#chart" />
+                            </svg>
+                        </div>
+                        <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+                            <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+                                <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+                                    <h2 class="mdl-card__title-text">Updates</h2>
+                                </div>
+                                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                    Non dolore elit adipisicing ea reprehenderit consectetur culpa.
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border">
+                                    <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
+                                </div>
                             </div>
-                            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
+                            <div class="demo-separator mdl-cell--1-col"></div>
+                            <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+                                <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+                                    <h3>View options</h3>
+                                    <ul>
+                                        <li>
+                                            <label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                                <input type="checkbox" id="chkbox1" class="mdl-checkbox__input">
+                                                <span class="mdl-checkbox__label">Click per object</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                                <input type="checkbox" id="chkbox2" class="mdl-checkbox__input">
+                                                <span class="mdl-checkbox__label">Views per object</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                                <input type="checkbox" id="chkbox3" class="mdl-checkbox__input">
+                                                <span class="mdl-checkbox__label">Objects selected</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                                <input type="checkbox" id="chkbox4" class="mdl-checkbox__input">
+                                                <span class="mdl-checkbox__label">Objects viewed</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mdl-card__actions mdl-card--border">
+                                    <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
+                                    <div class="mdl-layout-spacer"></div>
+                                    <i class="material-icons">location_on</i>
+                                </div>
                             </div>
                         </div>
-                        <div class="demo-separator mdl-cell--1-col"></div>
-                        <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
-                            <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
-                                <h3>View options</h3>
-                                <ul>
-                                    <li>
-                                        <label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                            <input type="checkbox" id="chkbox1" class="mdl-checkbox__input">
-                                            <span class="mdl-checkbox__label">Click per object</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                            <input type="checkbox" id="chkbox2" class="mdl-checkbox__input">
-                                            <span class="mdl-checkbox__label">Views per object</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                            <input type="checkbox" id="chkbox3" class="mdl-checkbox__input">
-                                            <span class="mdl-checkbox__label">Objects selected</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                            <input type="checkbox" id="chkbox4" class="mdl-checkbox__input">
-                                            <span class="mdl-checkbox__label">Objects viewed</span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
-                                <div class="mdl-layout-spacer"></div>
-                                <i class="material-icons">location_on</i>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </main>
-        </div>
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
-        <defs>
+                </main>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
+            <defs>
         <mask id="piemask" maskContentUnits="objectBoundingBox">
             <circle cx=0.5 cy=0.5 r=0.49 fill="white" />
             <circle cx=0.5 cy=0.5 r=0.40 fill="black" />
@@ -199,15 +224,14 @@
         </defs>
         </svg>
         <script>
-            //      $(document).ready(function() {
-            //          
-            //        function disableBack() { window.history.forward(-2) };
-            //
-            //        window.onload = disableBack();
-            //        window.onpageshow = function(evt) { if (evt.persisted) disableBack() };
-            //    });
-        </script>
-    </sec:authorize>
-</body>
-</html>
+//      $(document).ready(function() {
+//          
+//        function disableBack() { window.history.forward(-2) };
+//
+//        window.onload = disableBack();
+//        window.onpageshow = function(evt) { if (evt.persisted) disableBack() };
+//    });
+        </sec:authorize>
+            < /body>
+                    < /html>
 

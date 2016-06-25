@@ -8,6 +8,7 @@ package com.sharmila.hibernatespringsecurity.entity;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,8 +33,8 @@ public class Role {
     @Column(name = "role")
    private String role;
    
-   @ManyToMany(mappedBy = "role")
- 
+   @ManyToMany(mappedBy = "role",fetch = FetchType.LAZY)
+   @Cascade(CascadeType.ALL)
    private Set<User> user;
 
     public Role() {

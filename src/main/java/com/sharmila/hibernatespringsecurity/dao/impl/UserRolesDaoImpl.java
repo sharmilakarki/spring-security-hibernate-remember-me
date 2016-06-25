@@ -71,20 +71,19 @@ public class UserRolesDaoImpl implements UserRolesDao {
 
     @Override
     public UserRoles getById(int id) {
-        session=sessionFactory.openSession();
-        UserRoles userRoles=(UserRoles) session.get(UserRoles.class, new Integer(id));
-        
+        session = sessionFactory.openSession();
+        UserRoles userRoles = (UserRoles) session.get(UserRoles.class, new Integer(id));
+
         session.close();
         return userRoles;
-                
-        
+
     }
 
     @Override
-    public UserRoles getByName(String username) {
-        session=sessionFactory.openSession();
-        UserRoles userRoles=(UserRoles) session.get(UserRoles.class, new String(username));
-        
+    public UserRoles getByuserId(int userId) {
+        session = sessionFactory.openSession();
+        UserRoles userRoles = (UserRoles) session.get(UserRoles.class, new Integer(userId));
+
         session.close();
         return userRoles;
     }

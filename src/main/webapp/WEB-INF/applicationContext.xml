@@ -31,21 +31,26 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.format_show">true</prop>
-                <prop key="hibernate.sql_show">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+            
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
         
            
     </bean>
-
-    <bean id="userDao" class="com.sharmila.hibernatespringsecurity.dao.impl.UserDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+<!--    <bean id="userDao" class="com.sharmila.hibernatespringsecurity.dao.impl.UserDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="userService" class="com.sharmila.hibernatespringsecurity.service.UserService">
-        <property name="userDao" ref="userDao"/>
-    </bean>
+    <bean id="userService" 
+          class="com.sharmila.hibernatespringsecurity.service.UserService">
+        <property name="userDao" ref="userDao" />
+        <property name="dataSource" ref="dataSource"/>
+    </bean>-->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
@@ -54,19 +59,9 @@
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="get*" read-only="true" />
-		
+           
             <tx:method name="*" />
         </tx:attributes>
     </tx:advice>
    
-   
-    <bean id="savedRequestAwareAuthenticationSuccessHandler"
-         class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-        <property name="targetUrlParameter" value="targetUrl" />
-    </bean>
-    <!--  <aop:config>
-        <aop:pointcut id="userServicePointCut"
-            expression="execution(* com.sharmila.hibernatespringsecurity.service.*UserService.*(..))" />
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="userServicePointCut" />
-    </aop:config>-->
 </beans>

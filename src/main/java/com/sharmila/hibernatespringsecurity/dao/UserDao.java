@@ -6,6 +6,7 @@
 package com.sharmila.hibernatespringsecurity.dao;
 
 import com.sharmila.hibernatespringsecurity.entity.User;
+import com.sharmila.hibernatespringsecurity.entity.UserRoles;
 import java.util.List;
 
 /**
@@ -19,5 +20,7 @@ public interface UserDao {
     List<User> getAll();
     User getById(int id);
     User getByUserName(String username);
-    User login(String username);
+    User getByRole(String role);
+    List<User> getFetchEager();
+
 }

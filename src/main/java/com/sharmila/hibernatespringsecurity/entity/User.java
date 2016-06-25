@@ -20,10 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 
 /**
@@ -32,7 +35,20 @@ import org.hibernate.annotations.Cascade;
  */
 @Entity
 @Table(name = "user")
+
+@NamedQueries(
+        {
+            @NamedQuery(name = User.UPDATE_LOCKED, query = User.UPDATE_LOCKED_QUERY),
+            @NamedQuery(name = User.COUNT_USERS, query = User.COUNT_USERS_QUERY)
+        }
+)
 public class User implements Serializable {
+
+    public static final String UPDATE_LOCKED_QUERY = "UPDATE User u SET u.accountNonLocked=:accountNonLocked where u.userName=:userName";
+    public static final String UPDATE_LOCKED = "UPDATE_LOCKED";
+
+    public static final String COUNT_USERS_QUERY = "SELECT count(u) from User u";
+    public static final String COUNT_USERS = "COUNT_USERS";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,10 +70,16 @@ public class User implements Serializable {
     private Date modifiedDate;
     @Column(name = "enabled")
     private boolean status;
+    @Column(name = "accountNonLocked")
+    private boolean accountNonLocked;
+    @Column(name = "accountNonExpired")
+    private boolean accountNonExpired;
+    @Column(name = "credentialsNonExpired")
+    private boolean credentialsNonExpired;
 
-    @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
-   
-    @JoinTable(name = "role_user",
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE}, fetch = FetchType.EAGER)
+
+    @JoinTable(name = "user_role",
             joinColumns = {
                 @JoinColumn(name = "user_id")},
             inverseJoinColumns = {
@@ -73,14 +95,18 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
-    public User(int id, String userName, String password, String email, String address, Date modifiedDate, boolean status, Set<Role> role) {
+    public User(int id, String userName, String password, String email, String address, Date addedDate, Date modifiedDate, boolean status, boolean accountNonLocked, boolean accountNonExpired, boolean credentialsNonExpired, Set<Role> role) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.address = address;
+        this.addedDate = addedDate;
         this.modifiedDate = modifiedDate;
         this.status = status;
+        this.accountNonLocked = accountNonLocked;
+        this.accountNonExpired = accountNonExpired;
+        this.credentialsNonExpired = credentialsNonExpired;
         this.role = role;
     }
 
@@ -149,6 +175,7 @@ public class User implements Serializable {
     }
 
     public Set<Role> getRole() {
+        Hibernate.initialize(role);
         return role;
     }
 
@@ -156,9 +183,29 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", email=" + email + ", address=" + address + ", addedDate=" + addedDate + ", modifiedDate=" + modifiedDate + ", status=" + status + ", role=" + role + '}';
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
     }
 
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+   
 }
